@@ -1,4 +1,33 @@
-# Ocupación del espectro 840-860 MHz en Medellín — IoT Examen 3 (2026-20)
+# Radio Spectrum Occupancy Analysis, 840-860 MHz, Medellín
+
+*Ocupación del espectro 840-860 MHz en Medellín. Proyecto del curso de Internet de las Cosas, UPB (2026-20).*
+
+## Overview (English)
+
+ETL and analytics pipeline for radio spectrum occupancy in the 840-860 MHz band in Medellín, built
+from 61 captures of a mobile monitoring station. It produces a data quality report, per-channel
+contamination indicators (four 5 MHz channels, Parseval's theorem vs. a -60 dBm threshold), an
+automated HTML technical report, interactive heat maps, and a Streamlit dashboard deployed on AWS.
+
+**How it was built.** Spec-Driven Development with GitHub Spec Kit in Claude Code: constitution, spec,
+plan, tasks, and data contracts were written and frozen before implementation
+(`specs/001-spectrum-occupancy-analysis/`). Custom Claude Code skills live in `.claude/skills/`.
+
+**Quality.** Input contract of 1,029 values per capture, plausibility limits, counted and justified
+imputations, quality gates that stop the run (exit code 2) when a check fails, and a pytest suite.
+
+**Architecture.** EC2 runs the pipeline, curated data goes to a private S3 data lake, the report is
+served from S3 static hosting, and the dashboard runs as a systemd service.
+
+**Quickstart (Python 3.12)**
+    python -m venv .venv && source .venv/bin/activate
+    pip install -r requirements.txt
+    python -m pytest -q
+    python -m espectro.pipeline --sin-carga
+
+The detailed documentation below is in Spanish.
+
+# Ocupación del espectro 840-860 MHz en Medellín
 
 Proceso ETL sobre 61 capturas de una estación móvil de monitoreo del espectro. El proceso produce:
 
